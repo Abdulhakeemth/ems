@@ -1,0 +1,70 @@
+<!-- @format -->
+{% extends 'dashboard/base.html' %}
+{% load static %} {% block content %}
+<!-- Main Content -->
+<div class="main-content">
+  <section class="section">
+    <div class="section-body">
+      <div class="row">
+        <div class="col-12 col-md-12 col-lg-6">
+          <div class="card card-primary">
+            <div class="card-header pb-0">
+              <h4>View Student</h4>
+            </div>
+            <div class="card-body">
+              <form class="ajax" action="{% url 'student:my_data'%}" method="POST">
+
+                <div class="form-group">
+                  <label>Student ID</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-copyright"></i>
+                      </div>
+                    </div>
+                    <input type="password" name="rfid" class="form-control" autofocus required id="rfid">
+                    {% csrf_token %}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label></label>
+                  <div class="input-group btn-primary">
+                    <div class="input-group-prepend">
+                      <!-- <div class="input-group-text">
+                            <i class="fas fa-phone"></i>
+                          </div> -->
+                    </div>
+                    <input type="submit" class="form-control" name="submit" value="submit">
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %} {% load static %}{% block scripts %} {{formset.media}}
+
+<script src="{% static 'dashboard/js/jquery.formset.min.js' %}"></script>
+<!-- <script src="{% static 'dashboard/bundles/editable-table/mindmup-editabletable.js' %}"></script> -->
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(".form_set_row").formset({
+      prefix: "{{formset.prefix}}",
+      formCssClass: "dynamic-formset1",
+      addText: "Add-row",
+      addCssClass: "btn btn-primary btn-sm ml-2",
+      deleteCssClass: "delete-row",
+      deleteText: "<i class='fas fa-trash-alt text-danger'></i>",
+    });
+  });
+  //   $(function () {
+  //     $("#mainTable").editableTableWidget();
+  //   });
+</script>
+
+{% endblock %}

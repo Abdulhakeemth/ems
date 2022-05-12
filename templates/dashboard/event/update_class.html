@@ -1,0 +1,99 @@
+<!-- @format -->
+
+{% extends 'dashboard/base.html' %} {% load static %} {% block content %}
+
+<!-- Main Content -->
+<div class="main-content">
+  <section class="section">
+    <div class="section-body">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-6">
+          <div class="card">
+            <div class="card-header">
+              <h4>Update Class</h4>
+            </div>
+            <div class="card-body">
+              <form class="ajax" action="{% url 'class_detail:update' pk=instance.pk %}" method="POST">
+                <div class="form-group">
+                  <label> Title</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-copyright"></i>
+                      </div>
+                    </div>
+                    {{ form.title }}
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label> Semester</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-copyright"></i>
+                      </div>
+                    </div>
+                    {{ form.semester }}
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label> Department</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-copyright"></i>
+                      </div>
+                    </div>
+                    {{ form.department }}
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Class Teacher</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-copyright"></i>
+                      </div>
+                    </div>
+                    {{ form.class_teacher }}
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Description</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-copyright"></i>
+                      </div>
+                    </div>
+                    {{ form.description }}
+                  </div>
+                </div>
+
+
+                {% csrf_token %}
+
+                <div class="form-group">
+                  <label></label>
+                  <div class="input-group btn-primary">
+                    <div class="input-group-prepend">
+                      <!-- <div class="input-group-text">
+                            <i class="fas fa-phone"></i>
+                          </div> -->
+                    </div>
+                    <input type="submit" class="form-control" name="submit" value="submit" />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endblock %}
+</div>

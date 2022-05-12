@@ -1,0 +1,89 @@
+<!-- @format -->
+
+{% extends 'dashboard/base.html' %} {% load static %} {% block content %}
+
+<!-- Main Content -->
+<div class="main-content">
+  <section class="section">
+    <div class="section-body">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-6">
+          <div class="card">
+            <div class="card-header">
+              <h4>Update Lab Session Attendance</h4>
+            </div>
+            <div class="card-body">
+              <form class="ajax" action="{% url 'lab:update_lab_session_attendance' pk=instance.pk %}" method="POST">
+                <div class="form-group">
+                  <label> Lab session</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-copyright"></i>
+                      </div>
+                    </div>
+                    {{ form.lab_session }}
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label> Student</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-copyright"></i>
+                      </div>
+                    </div>
+                    {{ form.student }}
+                  </div>
+                </div>
+
+
+
+                <div class="form-group">
+                  <label> Login</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-copyright"></i>
+                      </div>
+                    </div>
+                    {{ form.start_time }}
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label> Logout</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-copyright"></i>
+                      </div>
+                    </div>
+                    {{ form.end_time }}
+                  </div>
+                </div>
+
+
+                {% csrf_token %}
+
+                <div class="form-group">
+                  <label></label>
+                  <div class="input-group btn-primary">
+                    <div class="input-group-prepend">
+                      <!-- <div class="input-group-text">
+                            <i class="fas fa-phone"></i>
+                          </div> -->
+                    </div>
+                    <input type="submit" class="form-control" name="submit" value="submit" />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endblock %}
+</div>

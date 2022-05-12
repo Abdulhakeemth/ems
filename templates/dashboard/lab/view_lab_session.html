@@ -1,0 +1,204 @@
+<!-- @format -->
+{% extends 'dashboard/base.html' %}
+{% load static %} {% block content %}
+<!-- Main Content -->
+<div class="main-content">
+  <section class="section">
+    <div class="section-body">
+      <div class="row">
+        <div class="col-12 col-md-12 col-lg-6">
+          <div class="card card-primary">
+            <div class="card-header pb-0">
+              <h4>Lab Session</h4>
+            </div>
+            <div class="card-body">
+              <ul
+                class="list-unstyled user-details list-unstyled-border list-unstyled-noborder"
+              >
+                <li class="media">
+                  <div class="media-body">
+                    <div class="media-title">Class</div>
+                  </div>
+                  <div class="media-items">
+                    <div class="media-item">
+                      <div class="media-value">{{ lab_session.class_detail.title }}</div>
+                    </div>
+                  </div>
+                </li>
+                <li class="media">
+                  <div class="media-body">
+                    <div class="media-title">Subject</div>
+                  </div>
+                  <div class="media-items">
+                    <div class="media-item">
+                      <div class="media-value">{{ lab_session.subject }}</div>
+                    </div>
+                  </div>
+                </li>
+                <li class="media">
+                  <div class="media-body">
+                    <div class="media-title">Teacher</div>
+                  </div>
+                  <div class="media-items">
+                    <div class="media-item">
+                      <div class="media-value">
+                        {{ lab_session.teacher }}
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="media">
+                  <div class="media-body">
+                    <div class="media-title">Start time</div>
+                  </div>
+                  <div class="media-items">
+                    <div class="media-item">
+                      <div class="media-value">{{ lab_session.start_time }}</div>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="media">
+                  <div class="media-body">
+                    <div class="media-title">End time</div>
+                  </div>
+                  <div class="media-items">
+                    <div class="media-item">
+                      <div class="media-value">{{ lab_session.end_time }}</div>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="media">
+                  <div class="media-body">
+                    <div class="media-title">Description</div>
+                  </div>
+                  <div class="media-items">
+                    <div class="media-item">
+                      <div class="media-value">{{ lab_session.description }}</div>
+                    </div>
+                  </div>
+                </li>
+
+                {% if request.user.is_admin or request.user.is_teacher%}
+                <li class="media print_hide">
+                  <a
+                    href="{% url 'lab:delete_lab_session' pk=lab_session.pk%}"
+                    class="ml-4 d-block btn btn-outline-danger btn-sm"
+                    >Delete Session</a
+                  >
+                  <a href="{% url 'lab:update_lab_session' pk=lab_session.pk%}"
+                  class="ml-4 d-block btn btn-outline-primary btn-sm"
+                  >Edit Session</a>
+                            
+                </li>
+                {% endif %}
+
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-12 col-lg-6 print_hide">
+          {% if lab_session.is_active %}
+          <div class="card card-primary">
+            <div class="card-header pb-0">
+              <h4>Student Login/Logout</h4>
+            </div>
+            <div class="card-body">
+              <form class="ajax" action="{% url 'lab:view_lab_session' pk=lab_session.pk %}" method="POST">
+
+                <div class="form-group">
+                  <label>Student ID</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-copyright"></i>
+                      </div>
+                    </div>
+                    <input type="password" name="rfid" class="form-control" autofocus required id="rfid">
+                    {% csrf_token %}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label></label>
+                  <div class="input-group btn-primary">
+                    <div class="input-group-prepend">
+                      <!-- <div class="input-group-text">
+                            <i class="fas fa-phone"></i>
+                          </div> -->
+                    </div>
+                    <input type="submit" class="form-control" name="submit" value="submit">
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-12 col-md-12">
+          <div class="card card-dark">
+            <div class="card-header pb-0">
+              <h4>Attendance</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered table-md" id="tableExport">
+                  <tbody>
+                    <tr>
+                      <th>Roll No</th>
+                      <th>Reg No</th>
+                      <th>Name</th>
+                      <th>Login</th>
+                      <th>Logout</th>
+                      <th class="print_hide"></th>
+                    </tr>
+                    {% for item in attendance %}
+                    <tr style="background:{%if item.end_time %}#00db0052{%elif item.start_time %}#00fcff4a{%else%}#ff00004a{%endif%}">
+                      <td>{{ item.student.roll_no }}</td>
+                      <td>{{ item.student.reg_no }}</td>
+                      <td><a href="{% url 'student:view' pk=item.student.pk%}">{{ item.student.full_name }}</a></td>
+                      <td>{{ item.start_time }}</td>
+                      <td>{{ item.end_time }}</td>
+                      <td class="print_hide">
+                        {% if request.user.is_admin or request.user.is_teacher%}
+                        <a href="{% url 'lab:update_lab_session_attendance' pk=item.pk%}" class="btn btn-primary">Edit</a>
+                        <a href="{% url 'lab:delete_lab_session_attendance' pk=item.pk%}" class="btn btn-danger">Delete</a>
+                        {%endif%}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %} {% load static %}{% block scripts %} {{formset.media}}
+
+<script src="{% static 'dashboard/js/jquery.formset.min.js' %}"></script>
+<!-- <script src="{% static 'dashboard/bundles/editable-table/mindmup-editabletable.js' %}"></script> -->
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(".form_set_row").formset({
+      prefix: "{{formset.prefix}}",
+      formCssClass: "dynamic-formset1",
+      addText: "Add-row",
+      addCssClass: "btn btn-primary btn-sm ml-2",
+      deleteCssClass: "delete-row",
+      deleteText: "<i class='fas fa-trash-alt text-danger'></i>",
+    });
+  });
+  //   $(function () {
+  //     $("#mainTable").editableTableWidget();
+  //   });
+</script>
+
+{% endblock %}

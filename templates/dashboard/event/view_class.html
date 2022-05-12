@@ -1,0 +1,154 @@
+<!-- @format -->
+{% extends 'dashboard/base.html' %}
+{% load static %} {% block content %}
+<!-- Main Content -->
+<div class="main-content">
+  <section class="section">
+    <div class="section-body">
+      <div class="row">
+        <div class="col-12 col-md-12 col-lg-6">
+          <div class="card card-primary">
+            <div class="card-header pb-0">
+              <h4>Class Details</h4>
+            </div>
+            <div class="card-body">
+              <ul
+                class="list-unstyled user-details list-unstyled-border list-unstyled-noborder"
+              >
+                <li class="media">
+                  <div class="media-body">
+                    <div class="media-title">Title</div>
+                  </div>
+                  <div class="media-items">
+                    <div class="media-item">
+                      <div class="media-value">{{ class_detail.title }}</div>
+                    </div>
+                  </div>
+                </li>
+                <li class="media">
+                  <div class="media-body">
+                    <div class="media-title">Semester</div>
+                  </div>
+                  <div class="media-items">
+                    <div class="media-item">
+                      <div class="media-value">{{ class_detail.semester }}</div>
+                    </div>
+                  </div>
+                </li>
+                <li class="media">
+                  <div class="media-body">
+                    <div class="media-title">Department</div>
+                  </div>
+                  <div class="media-items">
+                    <div class="media-item">
+                      <div class="media-value">
+                        {{ class_detail.department }}
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="media">
+                  <div class="media-body">
+                    <div class="media-title">Class teacher</div>
+                  </div>
+                  <div class="media-items">
+                    <div class="media-item">
+                      <div class="media-value">{{ class_detail.class_teacher }}</div>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="media">
+                  <div class="media-body">
+                    <div class="media-title">Description</div>
+                  </div>
+                  <div class="media-items">
+                    <div class="media-item">
+                      <div class="media-value">{{ class_detail.description }}</div>
+                    </div>
+                  </div>
+                </li>
+
+                <li class="media">
+                  <a
+                    href="{% url 'class_detail:delete' pk=class_detail.pk%}"
+                    class="ml-4 d-block btn btn-outline-danger btn-sm"
+                    >Delete Class</a
+                  >
+                  <a href="{% url 'class_detail:update' pk=class_detail.pk%}"
+                  class="ml-4 d-block btn btn-outline-primary btn-sm"
+                  >Edit Class</a
+                >
+
+                <a href="{% url 'student:create' pk=class_detail.pk%}"
+                  class="ml-4 d-block btn btn-outline-primary btn-sm"
+                  >Add Students</a
+                >
+                </li>
+                
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-12 col-lg-6">
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-12 col-md-12">
+          <div class="card card-dark">
+            <div class="card-header pb-0">
+              <h4>Students</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered table-md">
+                  <tbody>
+                    <tr>
+                      <th>Roll No</th>
+                      <th>Reg No</th>
+                      <th>Name</th>
+                      <th>Dob</th>
+                    </tr>
+                    {% for item in students %}
+                    <tr>
+                      <td>{{ item.roll_no }}</td>
+                      <td>{{ item.reg_no }}</td>
+                      <td><a href="{% url 'student:view' pk=item.pk%}">{{ item.full_name }}</a></td>
+                      <td>{{ item.dob }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+</div>
+{% endblock %} {% load static %}{% block scripts %} {{formset.media}}
+
+<script src="{% static 'dashboard/js/jquery.formset.min.js' %}"></script>
+<!-- <script src="{% static 'dashboard/bundles/editable-table/mindmup-editabletable.js' %}"></script> -->
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(".form_set_row").formset({
+      prefix: "{{formset.prefix}}",
+      formCssClass: "dynamic-formset1",
+      addText: "Add-row",
+      addCssClass: "btn btn-primary btn-sm ml-2",
+      deleteCssClass: "delete-row",
+      deleteText: "<i class='fas fa-trash-alt text-danger'></i>",
+    });
+  });
+  //   $(function () {
+  //     $("#mainTable").editableTableWidget();
+  //   });
+</script>
+
+{% endblock %}

@@ -1,0 +1,138 @@
+<!-- @format -->
+
+{% extends 'dashboard/base.html' %} {% load static %} {% block content %}
+
+<!-- Main Content -->
+<div class="main-content">
+  <section class="section">
+    <div class="section-body">
+      <div class="row">
+        <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+          <div class="card">
+            <div class="card-header">
+              <h4>Create Students</h4>
+            </div>
+            <div class="card-body">
+              <form
+                class="ajax students_form"
+                action="{% url 'student:create' pk=class_detail %}"
+                method="POST"
+                enctype="multipart/form-data"
+                autocomplete="off"
+              >
+                <!-- <div class="form-group">
+                  <label>Group Name</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <i class="fas fa-copyright"></i>
+                      </div>
+                    </div>
+                    form.group_name
+                  </div>
+                </div> -->
+
+                <div class="form-group">
+                  <div class="formset_group pt-4">
+                    {{ formset.management_form }}
+                    {% for form_item in formset %}
+                      <div class="form-group form_set_row">
+                        <div class="input-group d-flex justify-content-around">
+                        <span class="mr-2">
+                          <label class="mt-4" for="">Reg No:</label>
+                          {{ form_item.reg_no}}
+                        </span>
+                        <span class="mr-2">
+                          <label class="mt-4" for="">Roll No:</label>
+                          {{ form_item.roll_no}}
+                        </span>
+                        <span class="mr-2">
+                          <label class="mt-4" for="">Full name:</label>
+                          {{ form_item.full_name}}
+                        </span>
+            
+                          <input type="hidden" value="{{class_detail}}" name="students-formset-0-class_detail" class="required form-control" id="id_students-formset-0-class_detail">
+
+                        <span class="mr-2">
+                          <label class="mt-4" for="">Dob:</label>
+                          {{ form_item.dob}}
+                        </span>
+                        <span class="mr-2">
+                          <label class="mt-4" for="">RFID:</label>
+                          {{ form_item.rfid}}
+                        </span>
+                        </div>
+                      </div>
+
+
+                    {% endfor %}
+
+                  </div>
+                </div>
+
+
+
+                {% csrf_token %}
+
+                <div class="form-group">
+                  <label></label>
+                  <div class="input-group btn-primary">
+                    <div class="input-group-prepend">
+                      <!-- <div class="input-group-text">
+                            <i class="fas fa-phone"></i>
+                          </div> -->
+                    </div>
+                    <input
+                      type="submit"
+                      class="form-control btn-primary"
+                      name="submit"
+                      value="submit"
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %} {% block scripts %} {{ formset.media }}
+
+<script src="{% static 'dashboard/js/jquery.formset.min.js' %}"></script>
+<!-- <script src="{% static 'dashboard/bundles/editable-table/mindmup-editabletable.js' %}"></script> -->
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(".rfid_input").val("");
+
+    $(".form_set_row").formset({
+      prefix: "{{formset.prefix}}",
+      formCssClass: "dynamic-formset1",
+      addText: "Add-row",
+      addCssClass: "btn btn-primary btn-sm ml-2 add_row",
+      deleteCssClass: "delete-row",
+      deleteText: "<i class='fas fa-trash-alt text-danger'></i>",
+    });
+  });
+
+function rfid_change(event){
+    if (event.key === "Enter") {
+      event.preventDefault();
+      let flag = 0
+      $(".students_form input").each(function(){
+        if($(this).val()==""){
+          flag+=1
+        }
+      })
+      if(flag==0){
+        $(".add_row").click();
+      }
+    }
+  }
+
+
+</script>
+
+{% endblock %}
